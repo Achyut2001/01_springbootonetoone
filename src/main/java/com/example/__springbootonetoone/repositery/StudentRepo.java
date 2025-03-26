@@ -10,10 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StudentRepo extends JpaRepository<Student,Long> {
+public interface StudentRepo extends JpaRepository<Student, Long> {
     Page<Student> findAll(Pageable pageable);
 
     public List<Student> findByAgeLessThan(Integer age);
-
 
 }

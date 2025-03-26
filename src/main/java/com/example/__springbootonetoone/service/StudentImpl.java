@@ -1,18 +1,17 @@
 package com.example.__springbootonetoone.service;
 
+import com.example.__springbootonetoone.controller.customexception.StudentNotFound;
 import com.example.__springbootonetoone.model.Student;
 import com.example.__springbootonetoone.repositery.StudentRepo;
-import com.example.__springbootonetoone.repositery.studentSubjectRepo;
-import jakarta.validation.Valid;
+import com.example.__springbootonetoone.repositery.StudentSubjectRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import java.util.List;
-import java.util.Optional;
 
+import java.util.List;
 
 @Service
 @Validated
@@ -20,34 +19,33 @@ public class StudentImpl {
 
     @Autowired
     private StudentRepo service;
-
     @Autowired
-    private studentSubjectRepo subjectRepo;
+    private StudentSubjectRepo subjectRepo;
 
-    public void addData(@Valid Student student) {
-        service.save(student);
-        //subjectRepo.save(subject);
+
+    public Student addData(Student student) {
+        return service.save(student);
     }
 
     public Page<Student> displayStudentData(int page, int size) {
-
         Pageable pageable = PageRequest.of(page, size);
         return service.findAll(pageable);
     }
 
-    public List<Student> displaySubjectData() {
-        return this.service.findAll();
-    }
-
-
-    public void updateStudentData(long id) {
-
-
-    }
 
     public Student getStudentById(long id) {
-        Optional<Student> student = service.findById(id);
-        return student.orElse(null);  // Returns a student if found, otherwise returns null
+        return service.findById(id)
+                .orElseThrow(() -> new StudentNotFound("Id Is Not Present"));
+    }
+
+
+    public void update(long id, Student student) {
+        Student st = service.findById(id)
+                .orElseThrow(() -> new StudentNotFound("Id Is Not Present"));
+        st.setName(student.getName());
+        st.setSubjects(student.getSubjects());
+        st.setAge(student.getAge());
+        service.save(st);
     }
 
     public void deleteDataById(long id) {
@@ -55,7 +53,7 @@ public class StudentImpl {
     }
 
     public List<Student> findByAge(int age) {
-        return (List<Student>) service.findByAgeLessThan(age);
+        return service.findByAgeLessThan(age);
     }
 
 }

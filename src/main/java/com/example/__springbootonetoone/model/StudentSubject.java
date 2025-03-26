@@ -7,13 +7,14 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
+@Data
 public class StudentSubject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotNull
-    @Size(max = 12,min = 2)
+    @Size(max = 12, min = 2)
     private String subj_name;
 
     @ManyToOne
@@ -23,13 +24,8 @@ public class StudentSubject {
     public StudentSubject() {
     }
 
-    public StudentSubject(long id, String subj_name, Student student) {
-        this.id = id;
-        this.subj_name = subj_name;
-        this.student = student;
-    }
 
-    public long getId() {
+    /*public long getId() {
         return id;
     }
 
@@ -51,5 +47,5 @@ public class StudentSubject {
 
     public void setStudent(Student student) {
         this.student = student;
-    }
+    }*/
 }
