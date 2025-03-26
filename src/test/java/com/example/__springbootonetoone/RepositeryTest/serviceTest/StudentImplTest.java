@@ -43,7 +43,7 @@ public class StudentImplTest {
 
         student1 = new Student();
         student1.setId(2L); // Different ID
-        student1.setName("Jane Doe"); // Fixed name
+        student1.setName("Jane Doe");
         student1.setAge(18);
     }
 

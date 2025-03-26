@@ -1,0 +1,181 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Student</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.__springbootonetoone.model</a>
+</div>
+
+<h1>Coverage Summary for Class: Student (com.example.__springbootonetoone.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Student</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.9%
+  </span>
+  <span class="absValue">
+    (10/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (10/15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.__springbootonetoone.model;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.annotation.JsonIgnore;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import jakarta.validation.constraints.NotNull;
+&nbsp;import lombok.Data;
+&nbsp;import org.springframework.context.annotation.Scope;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;import java.util.Set;
+&nbsp;@Entity
+&nbsp;@Scope(value = &quot;singleton&quot;)
+&nbsp;@Component
+&nbsp;@Data
+&nbsp;public class Student {
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private Long id;
+&nbsp;
+&nbsp;    @NotNull
+&nbsp;    private String name;
+&nbsp;    @NotNull
+&nbsp;    private Integer age;
+&nbsp;
+&nbsp;    @OneToMany(cascade = CascadeType.ALL)
+&nbsp;    //  @JsonManagedReference
+&nbsp;    @JsonIgnore
+&nbsp;    private Set&lt;StudentSubject&gt; subjects;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;    public Student() {</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public Student(Long id, String name, Integer age, Set&lt;StudentSubject&gt; subjects) {</b>
+<b class="nc">&nbsp;        this.id = id;</b>
+<b class="nc">&nbsp;        this.name = name;</b>
+<b class="nc">&nbsp;        this.age = age;</b>
+<b class="nc">&nbsp;        this.subjects = subjects;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Student(int i, String janeDoe, int i1) {</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public Long getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setId(Long id) {
+<b class="fc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public @NotNull String getName() {
+<b class="fc">&nbsp;        return name;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setName(@NotNull String name) {
+<b class="fc">&nbsp;        this.name = name;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public @NotNull Integer getAge() {
+<b class="fc">&nbsp;        return age;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setAge(@NotNull Integer age) {
+<b class="fc">&nbsp;        this.age = age;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Set&lt;StudentSubject&gt; getSubjects() {
+<b class="fc">&nbsp;        return subjects;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setSubjects(Set&lt;StudentSubject&gt; subjects) {
+<b class="fc">&nbsp;        this.subjects = subjects;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-03-26 18:55</div>
+</div>
+</body>
+</html>
