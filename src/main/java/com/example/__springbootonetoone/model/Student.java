@@ -32,14 +32,14 @@ public class Student {
     public Student() {
     }
 
-   /* public Student(Long id, String name, Integer age, Set<StudentSubject> subjects) {
+    public Student(Long id, String name, Integer age, Set<StudentSubject> subjects) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.subjects = subjects;
-    }*/
+    }
 
-    public Student(int i, String johnDoe, int i1) {
+    public Student(int i, String janeDoe, int i1) {
     }
 
 

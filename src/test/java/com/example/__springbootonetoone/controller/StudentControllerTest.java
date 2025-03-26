@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,9 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
+import java.util.ArrayList;
 import java.util.List;
-
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -51,7 +51,7 @@ class StudentControllerTest {
         // When & Then
         mockMvc.perform(post("/add")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(student))) // Fixed issue here
+                        .content(objectMapper.writeValueAsString(student)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Student Data Added"));
 
@@ -61,20 +61,25 @@ class StudentControllerTest {
     @Test
     void testUpdateStudent_Success() throws Exception {
         // Given
-        long studentId = 1L;
-        Student student = new Student();
-        student.setName("Jane Doe");
-        student.setAge(22);
+        long studentId = 1;
+        Student updatedStudent = new Student();
+        updatedStudent.setName("Jane Doe");
+        updatedStudent.setAge(22);
+
+        // Mock the service update method
+        Mockito.doNothing().when(studentService).update(eq(studentId), any(Student.class));
 
         // When & Then
-        mockMvc.perform(put("/update/{id}", studentId)  // Changed from post() to put()
+        mockMvc.perform(put("/update/{id}", studentId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(student)))
+                        .content(objectMapper.writeValueAsString(updatedStudent)))
                 .andExpect(status().isOk());
 
-        // Verify that service.update() was called with correct parameters
+
         verify(studentService, times(1)).update(eq(studentId), any(Student.class));
     }
+
+
 
     @Test
     void testGetStudentById_Success() throws Exception {
@@ -103,10 +108,10 @@ class StudentControllerTest {
         // Given
         int page = 0;
         int size = 2;
-        List<Student> studentList = List.of(
-                new Student(1, "John Doe", 20), // Corrected duplicate ID issue
-                new Student(2, "Jane Doe", 22)
-        );
+        // Corrected duplicate ID issue
+        List<Student> studentList = new ArrayList<>();
+        studentList.add(new Student(1, "John Doe", 20));
+        studentList.add(new Student(2, "Jane Doe", 22));
 
         Page<Student> studentPage = new PageImpl<>(studentList, PageRequest.of(page, size), studentList.size());
 
@@ -130,20 +135,34 @@ class StudentControllerTest {
     }
 
     @Test
-    void testFindByAge_EmptyList() throws Exception {
+    void testFindByAge() throws Exception {
         // Given
-        int age = 25; // No students with this age
-        when(studentService.findByAge(age)).thenReturn(List.of());
+        int age = 20;
+        List<Student> students = List.of(
+                new Student(1, "John Doe", age),
+                new Student(2, "Jane Doe", age)
+        );
+
+        // Mock the service findByAge method
+        Mockito.when(studentService.findByAge(age)).thenReturn(students);
 
         // When & Then
-        mockMvc.perform(get("/findbyage/{age}", age)
+        mockMvc.perform(get("/findByAge/{age}", age)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())  // Ensure the response is an array
-                .andExpect(jsonPath("$.length()").value(0)); // Ensure it's empty
+                .andExpect(jsonPath("$.length()").value(students.size()))
+                .andExpect(jsonPath("$[0].id").value(students.get(0).getId()))
+                .andExpect(jsonPath("$[0].name").value(students.get(0).getName()))
+                .andExpect(jsonPath("$[0].age").value(students.get(0).getAge()))
+                .andExpect(jsonPath("$[1].id").value(students.get(1).getId()))
+                .andExpect(jsonPath("$[1].name").value(students.get(1).getName()))
+                .andExpect(jsonPath("$[1].age").value(students.get(1).getAge()));
 
+        // Verify that the service findByAge method was called once with the correct parameter
         verify(studentService, times(1)).findByAge(age);
     }
+
+
 
     @Test
     void testDeleteStudent_Success() throws Exception {

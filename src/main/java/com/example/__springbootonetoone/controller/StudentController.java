@@ -28,7 +28,7 @@ public class StudentController {
 
 
     @Transactional
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     public void updateData(@PathVariable long id, @RequestBody Student student) {
         service.update(id, student);
     }
